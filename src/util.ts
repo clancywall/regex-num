@@ -1,6 +1,7 @@
 export const gte = (num:number):RegExp => {
-    const int = Math.trunc(num);
-    const dec = num - int;
+    const strNum = num.toString().split('.');
+    const int = Number(strNum[0]);
+    const dec = (strNum.length > 1) ? Number('0.'+strNum[1]) : 0.0;
     return (dec > 0) 
         ? new RegExp(`(${igte(int)}\\.${dgte(dec)})|(${igt(int)}(\\.\\d+)?)`)
         : new RegExp(`${igte(int)}(\\.\\d+)?`);
