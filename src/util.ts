@@ -1,30 +1,33 @@
 export const gte = (num:number):RegExp => {
-    const strNum = num.toString().split('.');
-    const int = Number(strNum[0]);
-    const dec = (strNum.length > 1) ? Number('0.'+strNum[1]) : 0.0;
-    return (dec > 0) 
-        ? new RegExp(`(${igte(int)}\\.${dgte(dec)})|(${igt(int)}(\\.\\d+)?)`)
-        : new RegExp(`${igte(int)}(\\.\\d+)?`);
+    const n = getIntDec(num);
+    return (n.dec > 0)
+        ? new RegExp(`(${igte(n.int)}\\.${dgte(n.dec)})|(${igt(n.int)}(\\.\\d+)?)`)
+        : new RegExp(`${igte(n.int)}(\\.\\d+)?`);
 }
 
 export const gt = (num:number):RegExp => {
-    const int = Math.trunc(num);
-    const dec = Number(((num - int)+'').replace('0.',''));
-    return new RegExp(`(${igte(int)}\.${dgt(dec)})|(${igt(int)}(.\\d+)?)`);
+    const n = getIntDec(num);
+    return new RegExp(`(${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(.\\d+)?)`);
 }
 
 export const lte = (num:number):RegExp => {
-    const int = Math.trunc(num);
-    const dec = Number(((num - int)+'').replace('0.',''));
-    return new RegExp(`(${ilte(int)}\.${dlte(dec)})|(${ilt(int)}(.\\d+)?)`);
+    const n = getIntDec(num);
+    return new RegExp(`(${ilte(n.int)}\\.${dlte(n.dec)})|(${ilt(n.int)}(.\\d+)?)`);
 }
 
 export const lt = (num:number):RegExp => {
-    const int = Math.trunc(num);
-    const dec = Number(((num - int)+'').replace('0.',''));
-    return (dec > 0) 
-        ? new RegExp(`(${ilte(int)}\.${dlt(dec)})|(${ilt(int)}(.\\d+)?)`)
-        : new RegExp(`${ilt(int)}(.\\d+)?`);
+    const n = getIntDec(num);
+    return (n.dec > 0)
+        ? new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`)
+        : new RegExp(`${ilt(n.int)}(\\.\\d+)?`);
+}
+
+const getIntDec = (num: number):{int:number, dec:number} => {
+    const strNum = num.toString().split('.');
+    return {
+        int: Number(strNum[0]),
+        dec: (strNum.length > 1) ? Number('0.'+strNum[1]) : 0.0
+    }
 }
 
 const toDigits = (num:number):number[] => {
@@ -88,7 +91,7 @@ const dgte = (num:number):string => {
 }
 
 const dgt = (num:number):string=> {
-    return dgte(num) + '[1-9]';
+    return dgte(Number(num+'1'));
 }
 
 const dlte = (num:number):string => {
