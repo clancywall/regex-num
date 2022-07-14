@@ -1,6 +1,6 @@
 import { gt, gte, lte } from "../src/util";
 
-const depth = 100;
+const depth = 10000;
 
 test('check gte integers', () => {
     for (let i = 0; i < depth; i++) {

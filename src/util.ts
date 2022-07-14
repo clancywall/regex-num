@@ -7,19 +7,20 @@ export const gte = (num:number):RegExp => {
 
 export const gt = (num:number):RegExp => {
     const n = getIntDec(num);
-    return new RegExp(`(${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(.\\d+)?)`);
+    return new RegExp(`(${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(\\.\\d+)?)`);
 }
 
 export const lte = (num:number):RegExp => {
+    if (num === 0) return new RegExp('0(\\.0*)?');
     const n = getIntDec(num);
-    return new RegExp(`(${ilte(n.int)}\\.${dlte(n.dec)})|(${ilt(n.int)}(.\\d+)?)`);
+    return (n.int > 0) 
+        ? RegExp(`(${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(n.int)}(\\.\\d+)?)`)
+        : RegExp(`(${ilte(n.int)}(\\.${dlte(n.dec)})?)`);
 }
 
 export const lt = (num:number):RegExp => {
     const n = getIntDec(num);
-    return (n.dec > 0)
-        ? new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`)
-        : new RegExp(`${ilt(n.int)}(\\.\\d+)?`);
+    return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
 }
 
 const getIntDec = (num: number):{int:number, dec:number} => {
@@ -59,16 +60,19 @@ const igt = (num:number):string => {
 }
 
 const ilte = (num:number):string => {
+    if (num === 0) return '0';
     let n = toDigits(num);
     let reg = `\\d{0,${n.length-1}}|`;
     n.forEach(d => {
         reg += `[0-${d}]`;
     });
-    return `(${reg})`;
+    return (num > 9) 
+        ? `(${reg}|[0-${n[0]-1}]\\d{0,${n.length-1}})`
+        : `(${reg})`;
 }
 
 const ilt = (num:number):string => {
-    return ilte(num-1);
+    return (num > 0) ? ilte(num-1) : '0';
 }
 
 const dgte = (num:number):string => {
@@ -96,11 +100,26 @@ const dgt = (num:number):string=> {
 
 const dlte = (num:number):string => {
     let n = toDigits(num);
-    let reg = '';
-    n.forEach(d => {
-        reg += `[0-${d}]`;
-    });
-    reg += '\\d*'
+    let leadingZeros = 0;
+    for (let i = 0; i < n.length; i++) {
+        if (n[i] === 0) leadingZeros++;
+        else break;
+    }
+    if (leadingZeros === n.length) return '(0*)'
+    let reg = `0{${leadingZeros}}`;
+    for (let i = leadingZeros; i < n.length; i++) {
+        reg += `[0-${n[i]}]`;
+    }
+    reg += '0*';
+    reg += `|0{${leadingZeros}}(`;
+    for (let i = n.length; i > leadingZeros; i--) {      
+        for (let j = leadingZeros; j < i-1; j++) reg += `[0-${n[j]}]`;
+        if (n[i-1] > 1) reg +=`[0-${n[i-1]-1}]\\d*`;
+        else if (n[i-1] === 1) reg += `(0\\d*)?`;
+        else reg += '0*';
+        if (i-1 > leadingZeros) reg +='|';
+    }
+    reg+=')';
     return `(${reg})`;
 }
 
