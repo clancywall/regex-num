@@ -1,8 +1,7 @@
 import { gt, gte, lte } from "../src/util";
 import { check, getRegExp, runAllFromZero } from "./helpers";
 
-//['gte', 'gt', 'lte', 'lt'].forEach(type => {
-['gte'].forEach(type => {    
+['gte', 'gt', 'lte', 'lt'].forEach(type => {
     test(`check ${type} integers`, () => {
         console.log(`check ${type} integers`);
         runAllFromZero(type, 100, 1);
@@ -19,12 +18,11 @@ import { check, getRegExp, runAllFromZero } from "./helpers";
     });
 });
 
-test.skip(`check one number`, () => {
-    const type = 'gt';
-    const i = 0.56;
-    const j = 0.56;
+test(`check one number`, () => {
+    const type = 'lt';
+    const i = 0.1;
+    const j = 0;
     const reg = getRegExp(type, i);
-    console.log(reg);
     check(type, reg, i, j);
 });
 
