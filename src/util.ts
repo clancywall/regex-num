@@ -30,6 +30,12 @@ export const lt = (num:number):RegExp => {
 
 const prepareRegExp = (num:number, reg:string):RegExp => {
     try {
+        reg = reg
+            .replaceAll('\\d{0}','')
+            .replaceAll('[0-9]', '\\d');
+        for (let i = 0; i < 10; i++) {
+            reg = reg.replace(`[${i}-${i}]`,`${i}`);
+        }
         return new RegExp(`(${reg})`);
     } catch (err) {
         console.log(num + ' ' + reg);
