@@ -7,25 +7,25 @@ export const gte = (num:number):RegExp => {
 
 export const gt = (num:number):RegExp => {
     const n = getIntDec(num);
-    return new RegExp(`(${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(\\.\\d+)?)`);
+    return prepareRegExp(num, `${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(\\.\\d+)?`);
 }
 
 export const lte = (num:number):RegExp => {
-    if (num === 0) return new RegExp('0(\\.0*)?');
+    if (num === 0) return prepareRegExp(num, '0(\\.0*)?');
     const n = getIntDec(num);
     return (n.int > 0) 
-        ? RegExp(`(${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(n.int)}(\\.\\d+)?)`)
-        : RegExp(`(${ilte(n.int)}(\\.${dlte(n.dec)})?)`);
+        ? prepareRegExp(num, `${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(n.int)}(\\.\\d+)?`)
+        : prepareRegExp(num, `${ilte(n.int)}(\\.${dlte(n.dec)})?`);
 }
 
 export const lt = (num:number):RegExp => {
-    if (num === 0) return new RegExp('0(\\.0*)?');
+    if (num === 0) return prepareRegExp(num, '0(\\.0*)?');
     const n = getIntDec(num);
     if (n.int > 0 && n.dec > 0) 
-        return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`);
+        return prepareRegExp(num, `(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`);
     else if (n.int > 0)
-        return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
-    else return new RegExp(`(0(\\.${dlt(n.dec)})?)`);
+        return prepareRegExp(num, `(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
+    else return prepareRegExp(num, `0(\\.${dlt(n.dec)})?`);
 }
 
 const prepareRegExp = (num:number, reg:string):RegExp => {
