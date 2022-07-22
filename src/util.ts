@@ -19,8 +19,13 @@ export const lte = (num:number):RegExp => {
 }
 
 export const lt = (num:number):RegExp => {
+    if (num === 0) return new RegExp('0(\\.0*)?');
     const n = getIntDec(num);
-    return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
+    if (n.int > 0 && n.dec > 0) 
+        return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`);
+    else if (n.int > 0)
+        return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
+    else return new RegExp(`(0(\\.${dlt(n.dec)})?)`);
 }
 
 const prepareRegExp = (num:number, reg:string):RegExp => {
@@ -126,13 +131,17 @@ const dgt = (num:number):string=> {
 
 const dlte = (num:number):string => {
     let n = toDigits(num);
+    return dltProcess(n);
+}
+
+const dltProcess = (n:number[]):string => {
     let leadingZeros = 0;
     for (let i = 0; i < n.length; i++) {
         if (n[i] === 0) leadingZeros++;
         else break;
     }
     if (leadingZeros === n.length) return '(0*)'
-    let reg = `0{${leadingZeros}}`;
+    let reg = `0{1,}|0{${leadingZeros}}`;
     for (let i = leadingZeros; i < n.length; i++) {
         reg += `[0-${n[i]}]`;
     }
@@ -140,7 +149,7 @@ const dlte = (num:number):string => {
     reg += `|0{${leadingZeros}}(`;
     for (let i = n.length; i > leadingZeros; i--) {      
         for (let j = leadingZeros; j < i-1; j++) reg += `[0-${n[j]}]`;
-        if (n[i-1] > 1) reg +=`[0-${n[i-1]-1}]\\d*`;
+        if (n[i-1] > 1) reg +=`([0-${n[i-1]-1}]\\d*)?`;
         else if (n[i-1] === 1) reg += `(0\\d*)?`;
         else reg += '0*';
         if (i-1 > leadingZeros) reg +='|';
@@ -150,5 +159,18 @@ const dlte = (num:number):string => {
 }
 
 const dlt = (num:number):string => {
-    return dlte(num -1);
+    if (num === 0) return '0*';
+    let n = toDigits(num);
+    while (n.length < 16) {
+        n.push(0);
+    }
+    for (let i = 15; i >= 0; i--) {
+        if (n[i] > 0) {
+            n[i]--;
+            break;
+        } else {
+            n[i] = 9;
+        }
+    }
+    return dltProcess(n);
 }
