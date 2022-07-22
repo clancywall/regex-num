@@ -1,138 +1,30 @@
 import { gt, gte, lte } from "../src/util";
+import { check, getRegExp, runAllFromZero } from "./helpers";
 
-const depth = 10000;
-
-test('check gte integers', () => {
-    for (let i = 0; i < depth; i++) {
-        const reg = new RegExp(`^(${gte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            if (i > 0) expect(reg.test((i-1).toString())).toBeFalsy();
-            expect(reg.test((i+1).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
+//['gte', 'gt', 'lte', 'lt'].forEach(type => {
+['gte'].forEach(type => {    
+    test(`check ${type} integers`, () => {
+        console.log(`check ${type} integers`);
+        runAllFromZero(type, 100, 1);
+    });
+    
+    test(`check ${type} decimals`, () => {
+        console.log(`check ${type} decimals`);
+        runAllFromZero(type, 1, 0.01);
+    });
+    
+    test(`check ${type} floats`, () => {
+        console.log(`check ${type} all`);
+        runAllFromZero(type, 10, 0.1);
+    });
 });
 
-test('check gte decimals', () => {
-    for (let j = 1; j < depth; j++) {
-        const i = j/depth;
-        const reg = new RegExp(`^(${gte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            expect(reg.test((i-(1/depth)).toString())).toBeFalsy();
-            expect(reg.test((i+(1/depth)).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
+test.skip(`check one number`, () => {
+    const type = 'gt';
+    const i = 0.56;
+    const j = 0.56;
+    const reg = getRegExp(type, i);
+    console.log(reg);
+    check(type, reg, i, j);
 });
 
-test('check gte randoms', () => {
-    for (let j = 0; j < depth; j++) {
-        const i = Math.round(Math.random()*j*depth)/depth;
-        const diff = Math.round(Math.random()*10*depth)/depth;
-        const reg = new RegExp(`^(${gte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            if (i - diff > 0) expect(reg.test((i-diff).toString())).toBeFalsy();
-            expect(reg.test((i+diff).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + diff + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check gt integers', () => {
-    for (let i = 0; i < depth; i++) {
-        const reg = new RegExp(`^(${gt(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeFalsy();
-            if (i > 0) expect(reg.test((i-1).toString())).toBeFalsy();
-            expect(reg.test((i+1).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check gt decimals', () => {
-    for (let j = 1; j < depth; j++) {
-        const i = j/depth;
-        const reg = new RegExp(`^(${gt(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeFalsy();
-            expect(reg.test((i-(1/depth)).toString())).toBeFalsy();
-            expect(reg.test((i+(1/depth)).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check gt randoms', () => {
-    for (let j = 0; j < depth; j++) {
-        const i = Math.round(Math.random()*j*depth)/depth;
-        const diff = Math.round(Math.random()*10*depth)/depth;
-        const reg = new RegExp(`^(${gt(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeFalsy();
-            if (i - diff > 0) expect(reg.test((i-diff).toString())).toBeFalsy();
-            expect(reg.test((i+diff).toString())).toBeTruthy();
-        } catch (err) {
-            console.log(i + ' ' + diff + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check lte integers', () => {
-    for (let i = 0; i < depth; i++) {
-        const reg = new RegExp(`^(${lte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            if (i > 0) expect(reg.test((i-1).toString())).toBeTruthy();
-            expect(reg.test((i+1).toString())).toBeFalsy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check lte decimals', () => {
-    for (let j = 1; j < depth; j++) {
-        const i = j/depth;
-        const reg = new RegExp(`^(${lte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            expect(reg.test((i-(1/depth)).toString())).toBeTruthy();
-            expect(reg.test((i+(1/depth)).toString())).toBeFalsy();
-        } catch (err) {
-            console.log(i + ' ' + reg);
-            throw (err);
-        }
-    }
-});
-
-test('check lte randoms', () => {
-    for (let j = 0; j < depth; j++) {
-        const i = Math.round(Math.random()*j*depth)/depth;
-        const diff = Math.round(Math.random()*10*depth)/depth;
-        const reg = new RegExp(`^(${lte(i).source})$`);
-        try {
-            expect(reg.test(i.toString())).toBeTruthy();
-            if (i - diff > 0) expect(reg.test((i-diff).toString())).toBeTruthy();
-            expect(reg.test((i+diff).toString())).toBeFalsy();
-        } catch (err) {
-            console.log(i + ' ' + diff + ' ' + reg);
-            throw (err);
-        }
-    }
-});
