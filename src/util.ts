@@ -28,13 +28,19 @@ export const lt = (num:number):RegExp => {
     else return prepareRegExp(num, `0(\\.${dlt(n.dec)})?`);
 }
 
+// This is a pretty dirty way of cleaning up the regex, needs work.
 const prepareRegExp = (num:number, reg:string):RegExp => {
     try {
         reg = reg
             .replaceAll('\\d{0}','')
             .replaceAll('[0-9]', '\\d');
         for (let i = 0; i < 10; i++) {
-            reg = reg.replace(`[${i}-${i}]`,`${i}`);
+            reg = reg.replaceAll(`[${i}-${i}]`,`${i}`);
+        }
+        for (let i = 16; i > 1; i--) {
+            let s = '';
+            for (let j = 0; j < i; j++) s += '\\d';
+            reg = reg.replaceAll(s,`\\d{${i}}`);
         }
         return new RegExp(`(${reg})`);
     } catch (err) {
