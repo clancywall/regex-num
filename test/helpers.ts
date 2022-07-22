@@ -61,17 +61,12 @@ export const check = (type:string, reg:RegExp, i:number, j:number) => {
 }
 
 export const checkgte = (reg:RegExp, i:number, j:number) => {
-    try {
-        expect(reg.test(numToString(i))).toBeTruthy();
-        if (i === j) expect(reg.test(numToString(j))).toBeTruthy();
-        else if (i > j) {
-            expect(reg.test(numToString(j))).toBeFalsy();
-        } else {
-            expect(reg.test(numToString(j))).toBeTruthy();
-        }
-    } catch (err) {
-        console.log(`${i},${j},${reg}`);
-        throw (err);
+    expect(reg.test(numToString(i))).toBeTruthy();
+    if (i === j) expect(reg.test(numToString(j))).toBeTruthy();
+    else if (i > j) {
+        expect(reg.test(numToString(j))).toBeFalsy();
+    } else {
+        expect(reg.test(numToString(j))).toBeTruthy();
     }
 }
 
@@ -86,31 +81,23 @@ export const checkgt = (reg:RegExp, i:number, j:number) => {
 }
 
 export const checklte = (reg:RegExp, i:number, j:number) => {
-    try {
-        expect(reg.test(numToString(i))).toBeTruthy();
-        if (i === j) expect(reg.test(numToString(j))).toBeTruthy();
-        else if (i < j) {
-            expect(reg.test(numToString(j))).toBeFalsy();
-        } else {
-            expect(reg.test(numToString(j))).toBeTruthy();
-        }
-    } catch (err) {
-        console.log(`${i},${j},${reg}`);
-        throw (err);
+    expect(reg.test(numToString(i))).toBeTruthy();
+    if (i === j) expect(reg.test(numToString(j))).toBeTruthy();
+    else if (j < i) {
+        expect(reg.test(numToString(j))).toBeTruthy();
+    } else {
+        expect(reg.test(numToString(j))).toBeFalsy();
     }
 }
 
 export const checklt = (reg:RegExp, i:number, j:number) => {
-    try {
-        expect(reg.test(numToString(i))).toBeFalsy();
-        if (i === j) expect(reg.test(numToString(j))).toBeTruthy();
-        else if (i < j) {
-            expect(reg.test(numToString(j))).toBeFalsy();
-        } else {
-            expect(reg.test(numToString(j))).toBeTruthy();
-        }
-    } catch (err) {
-        console.log(`${i},${j},${reg}`);
-        throw (err);
+    //Negative numbers not supported, so skip 0 case. 
+    if (i === 0) return;
+    expect(reg.test(numToString(i))).toBeFalsy();
+    if (i === j) expect(reg.test(numToString(j))).toBeFalsy();
+    else if (j < i) {
+        expect(reg.test(numToString(j))).toBeTruthy();
+    } else {
+        expect(reg.test(numToString(j))).toBeFalsy();
     }
 }
