@@ -1,8 +1,8 @@
 export const gte = (num:number):RegExp => {
     const n = getIntDec(num);
     return (n.dec > 0)
-        ? new RegExp(`(${igte(n.int)}\\.${dgte(n.dec)})|(${igt(n.int)}(\\.\\d+)?)`)
-        : new RegExp(`${igte(n.int)}(\\.\\d+)?`);
+        ? prepareRegExp(num, `${igte(n.int)}\\.${dgte(n.dec)})|(${igt(n.int)}(\\.\\d+)?`)
+        : prepareRegExp(num, `${igte(n.int)}(\\.\\d+)?`);
 }
 
 export const gt = (num:number):RegExp => {
@@ -23,6 +23,15 @@ export const lt = (num:number):RegExp => {
     return new RegExp(`(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
 }
 
+const prepareRegExp = (num:number, reg:string):RegExp => {
+    try {
+        return new RegExp(`(${reg})`);
+    } catch (err) {
+        console.log(num + ' ' + reg);
+        throw(err);
+    }
+}
+
 const getIntDec = (num: number):{int:number, dec:number} => {
     const strNum = num.toString().split('.');
     return {
@@ -32,8 +41,8 @@ const getIntDec = (num: number):{int:number, dec:number} => {
 }
 
 const toDigits = (num:number):number[] => {
-    return String(num).replace("0.",'').split("").map((num)=>{
-        return Number(num)
+    return num.toLocaleString('en-US', { useGrouping: false, maximumFractionDigits: 16 }).replace("0.",'').split("").map((num)=>{
+        return Number(num);
     });
 }
 
@@ -77,6 +86,10 @@ const ilt = (num:number):string => {
 
 const dgte = (num:number):string => {
     let n = toDigits(num);
+    return dgtProcess(n);
+}
+
+const dgtProcess = (n:number[]):string => {
     let reg = '';
     n.forEach(d => {
         reg += `[${d}-9]`;
@@ -95,7 +108,20 @@ const dgte = (num:number):string => {
 }
 
 const dgt = (num:number):string=> {
-    return dgte(Number(num+'1'));
+    if (num === 0) return '\\d*[1-9]\\d*';
+    let n = toDigits(num);
+    while (n.length < 16) {
+        n.push(0);
+    }
+    for (let i = 15; i > 0; i--) {
+        if (n[i] < 9) {
+            n[i]++;
+            break;
+        } else {
+            n[i] = 0;
+        }
+    }
+    return dgtProcess(n);
 }
 
 const dlte = (num:number):string => {
