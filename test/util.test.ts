@@ -13,7 +13,7 @@ import { check, getRegExp, runAllFromZero } from "./helpers";
     });
     
     test(`check ${type} floats`, () => {
-        console.log(`check ${type} all`);
+        console.log(`check ${type} floats`);
         runAllFromZero(type, 10, 0.1);
     });
 });
