@@ -1,4 +1,9 @@
+const anyF = '\\d+(\\.\\d+)?';
+
 export const gte = (num: number): RegExp => {
+    if (num < 0)
+        return prepareRegExp(num, `${anyF}|-(${lte(num * -1).source})`);
+
     const n = getIntDec(num);
     return n.dec > 0
         ? prepareRegExp(
@@ -9,6 +14,8 @@ export const gte = (num: number): RegExp => {
 };
 
 export const gt = (num: number): RegExp => {
+    if (num < 0) return prepareRegExp(num, `${anyF}|-(${lt(num * -1).source})`);
+
     const n = getIntDec(num);
     return prepareRegExp(
         num,
@@ -17,28 +24,34 @@ export const gt = (num: number): RegExp => {
 };
 
 export const lte = (num: number): RegExp => {
-    if (num === 0) return prepareRegExp(num, '0(\\.0+)?');
+    if (num < 0) return prepareRegExp(num, `-(${gte(num * -1).source})`);
+
+    if (num === 0) return prepareRegExp(num, `-${anyF}|0(\\.0+)?`);
     const n = getIntDec(num);
     return n.int > 0
         ? prepareRegExp(
               num,
-              `${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(n.int)}(\\.\\d+)?`,
+              `-${anyF}|${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(
+                  n.int,
+              )}(\\.\\d+)?`,
           )
-        : prepareRegExp(num, `${ilte(n.int)}(\\.${dlte(n.dec)})?`);
+        : prepareRegExp(num, `-${anyF}|${ilte(n.int)}(\\.${dlte(n.dec)})?`);
 };
 
 export const lt = (num: number): RegExp => {
-    if (num === 0) return prepareRegExp(num, '0(\\.0+)?');
+    if (num < 0) return prepareRegExp(num, `-(${gt(num * -1).source})`);
+    if (num === 0) return prepareRegExp(num, `-${anyF}`);
     const n = getIntDec(num);
     if (n.int > 0 && n.dec > 0)
         return prepareRegExp(
             num,
-            `(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)|(${ilte(
+            `-${anyF}|(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(
                 n.int,
-            )}(\\.0+)?)`,
+            )}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`,
         );
-    else if (n.int > 0) return prepareRegExp(num, `${ilt(n.int)}(\\.\\d+)?`);
-    else return prepareRegExp(num, `0(\\.${dlt(n.dec)})?`);
+    else if (n.int > 0)
+        return prepareRegExp(num, `-${anyF}|${ilt(n.int)}(\\.\\d+)?`);
+    else return prepareRegExp(num, `-${anyF}|0(\\.${dlt(n.dec)})?`);
 };
 
 const prepareRegExp = (num: number, reg: string, collapse = true): RegExp => {

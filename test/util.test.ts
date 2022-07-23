@@ -1,19 +1,19 @@
 import { gt, gte, lte } from '../src/util';
-import { check, getRegExp, runAllFromZero, runRandoms } from './test.helpers';
+import { check, getRegExp, runAll, runRandoms } from './test.helpers';
 ['gte', 'gt', 'lte', 'lt'].forEach((type) => {
     test(`check ${type} integers`, () => {
         console.log(`check ${type} integers`);
-        runAllFromZero(type, 100, 1);
+        runAll(type, 100, -100, 1);
     });
 
     test(`check ${type} decimals`, () => {
         console.log(`check ${type} decimals`);
-        runAllFromZero(type, 1, 0.01);
+        runAll(type, 1, -1, 0.01);
     });
 
     test(`check ${type} floats`, () => {
         console.log(`check ${type} floats`);
-        runAllFromZero(type, 10, 0.1);
+        runAll(type, 10, -10, 0.1);
     });
 
     test(`check ${type} randoms to 8 significant figures`, () => {

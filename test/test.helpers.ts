@@ -1,14 +1,15 @@
 import { gt, gte, lte, lt } from '../src/util';
 
-export const runAllFromZero = (
+export const runAll = (
     type: string,
     max: number,
+    min: number,
     increment: number,
 ) => {
-    for (let i = 0, n1 = 0; n1 < max; i++) {
+    for (let i = min, n1 = 0; n1 < max; i++) {
         n1 = i * increment;
         const reg = getRegExp(type, n1);
-        for (let j = 0, n2 = 0; n2 < max; j++) {
+        for (let j = min, n2 = 0; n2 < max; j++) {
             n2 = j * increment;
             check(type, reg, n1, n2);
         }
@@ -122,8 +123,6 @@ export const checklte = (reg: RegExp, i: number, j: number) => {
 };
 
 export const checklt = (reg: RegExp, i: number, j: number) => {
-    //Negative numbers not supported, so skip 0 case.
-    if (i === 0) return;
     expect(reg.test(numToString(i))).toBeFalsy();
     if (i === j) expect(reg.test(numToString(j))).toBeFalsy();
     else if (j < i) {
