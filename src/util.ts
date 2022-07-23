@@ -26,12 +26,12 @@ export const lt = (num: number): RegExp => {
             num,
             `(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`
         );
-    else if (n.int > 0) return prepareRegExp(num, `(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(n.int)}(\\.\\d+)?)`);
+    else if (n.int > 0) return prepareRegExp(num, `${ilt(n.int)}(\\.\\d+)?`);
     else return prepareRegExp(num, `0(\\.${dlt(n.dec)})?`);
 };
 
-// This is a pretty dirty way of cleaning up the regex, needs work.
-const prepareRegExp = (num: number, reg: string, collapse = false): RegExp => {
+
+const prepareRegExp = (num: number, reg: string, collapse = true): RegExp => {
     try {
         if (collapse === true) reg = collapseRegExpString(reg);
         return new RegExp(`(${reg})`);
@@ -41,6 +41,7 @@ const prepareRegExp = (num: number, reg: string, collapse = false): RegExp => {
     }
 };
 
+// This is a pretty dirty way of cleaning up the regex, needs work.
 const collapseRegExpString = (reg: string): string => {
     reg = reg.replaceAll("\\d{0}", "").replaceAll("[0-9]", "\\d");
     for (let i = 0; i < 10; i++) {
@@ -101,11 +102,11 @@ const ilte = (num: number): string => {
     n.forEach((d) => {
         reg += `[0-${d}]`;
     });
-    for (let i = 0; i < n.length - 2; i++) {
+    for (let i = 0; i < n.length - 1; i++) {
         if (n[i] > 0) {
             reg += "|";
             for (let j = 0; j <= i; j++) {
-                reg += `[${j === i ? n[j] - 1 : n[j]}-9]`;
+                reg += `[0-${j === i ? n[j] - 1 : n[j]}]`;
             }
             reg += `\\d{${n.length - (i + 1)}}`;
         }

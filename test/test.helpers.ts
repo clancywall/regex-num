@@ -6,13 +6,27 @@ export const runAllFromZero = (type:string, max:number, increment:number) => {
         const reg = getRegExp(type, n1);
         for (let j = 0, n2 = 0; n2 < max; j++) {
             n2 = j * increment;
-            try {
-                check(type, reg, n1, n2);
-            } catch (err) {
-                console.log(`${n1},${n2},${reg}`);
-                throw (err);
-            }
+            check(type, reg, n1, n2);
         }
+    }
+}
+
+export const runRandoms = (type:string, iterations:number, ints:number, decimals:number) => {
+    const f1 = Math.pow(10, ints);
+    const d1 = Math.pow(10, decimals);
+    const f2 = Math.pow(10, ints+1);
+    const d2 = Math.pow(10, decimals+1);
+    const f3 = Math.pow(10, ints+1);
+    const d3 = Math.pow(10, decimals+1);
+    for (let i = 0; i < iterations; i++) {
+        const n1 = Math.round(Math.random()*f1*d1)/d1;
+        const n2 = Math.round(Math.random()*f1*d1)/d1;
+        const n3 = Math.round(Math.random()*f2*d2)/d2;
+        const n4 = Math.round(Math.random()*f3*d3)/d3;
+        const reg = getRegExp(type, n1);
+        check(type, reg, n1, n2);
+        check(type, reg, n1, n3);
+        check(type, reg, n1, n4);
     }
 }
 
@@ -42,21 +56,26 @@ export const getRegExp = (type:string, i:number) => {
 }
 
 export const check = (type:string, reg:RegExp, i:number, j:number) => {
-    switch (type.toLowerCase()) {
-        case 'gte':
-            checkgte(reg, i, j);
-            break;
-        case 'gt':
-            checkgt(reg, i, j);
-            break;
-        case 'lte':
-            checklte(reg, i, j);
-            break;
-        case 'lt':
-            checklt(reg, i, j);
-            break;
-        default:
-            throw new Error(`Comparison Type '${type}' not implemented`);
+    try {
+        switch (type.toLowerCase()) {
+            case 'gte':
+                checkgte(reg, i, j);
+                break;
+            case 'gt':
+                checkgt(reg, i, j);
+                break;
+            case 'lte':
+                checklte(reg, i, j);
+                break;
+            case 'lt':
+                checklt(reg, i, j);
+                break;
+            default:
+                throw new Error(`Comparison Type '${type}' not implemented`);
+        }
+    } catch (err) {
+        console.log(`${i},${j},${reg}`);
+            throw (err);
     }
 }
 
