@@ -30,6 +30,18 @@ import { check, getRegExp, runAllFromZero, runRandoms } from './test.helpers';
         console.log(`check ${type} randoms to 30 significant figures`);
         runRandoms(type, 1000, 15, 15);
     });
+
+    test(`check ${type} no trailing decimal points are accepted`, () => {
+        console.log(`check ${type} no trailing decimal points are accepted`);
+        try {
+            expect(getRegExp(type, 0).test('0.')).toBeFalsy();
+            expect(getRegExp(type, 1).test('1.')).toBeFalsy();
+        } catch (err) {
+            console.log(getRegExp(type, 0));
+            console.log(getRegExp(type, 1));
+            throw err;
+        }
+    });
 });
 
 test(`check one number`, () => {

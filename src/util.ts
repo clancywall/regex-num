@@ -17,7 +17,7 @@ export const gt = (num: number): RegExp => {
 };
 
 export const lte = (num: number): RegExp => {
-    if (num === 0) return prepareRegExp(num, '0(\\.0*)?');
+    if (num === 0) return prepareRegExp(num, '0(\\.0+)?');
     const n = getIntDec(num);
     return n.int > 0
         ? prepareRegExp(
@@ -28,7 +28,7 @@ export const lte = (num: number): RegExp => {
 };
 
 export const lt = (num: number): RegExp => {
-    if (num === 0) return prepareRegExp(num, '0(\\.0*)?');
+    if (num === 0) return prepareRegExp(num, '0(\\.0+)?');
     const n = getIntDec(num);
     if (n.int > 0 && n.dec > 0)
         return prepareRegExp(
@@ -182,7 +182,7 @@ const dltProcess = (n: number[]): string => {
         if (n[i] === 0) leadingZeros++;
         else break;
     }
-    if (leadingZeros === n.length) return '(0*)';
+    if (leadingZeros === n.length) return '(0+)';
     let reg = `0{1,}|0{${leadingZeros}}`;
     for (let i = leadingZeros; i < n.length; i++) {
         reg += `[0-${n[i]}]`;
