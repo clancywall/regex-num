@@ -1,4 +1,5 @@
 const anyF = '\\d+(\\.\\d+)?';
+const tD = '(\\.\\d+)?';
 
 export const gte = (num: number): RegExp => {
     if (num < 0)
@@ -8,9 +9,9 @@ export const gte = (num: number): RegExp => {
     return n.dec > 0
         ? prepareRegExp(
               num,
-              `${igte(n.int)}\\.${dgte(n.dec)})|(${igt(n.int)}(\\.\\d+)?`,
+              `${igte(n.int)}\\.${dgte(n.dec)})|(${igt(n.int)}${tD}`,
           )
-        : prepareRegExp(num, `${igte(n.int)}(\\.\\d+)?`);
+        : prepareRegExp(num, `${igte(n.int)}${tD}`);
 };
 
 export const gt = (num: number): RegExp => {
@@ -19,7 +20,7 @@ export const gt = (num: number): RegExp => {
     const n = getIntDec(num);
     return prepareRegExp(
         num,
-        `${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}(\\.\\d+)?`,
+        `${igte(n.int)}\\.${dgt(n.dec)})|(${igt(n.int)}${tD}`,
     );
 };
 
@@ -33,7 +34,7 @@ export const lte = (num: number): RegExp => {
               num,
               `-${anyF}|${ilte(n.int)}(\\.${dlte(n.dec)})?)|(${ilt(
                   n.int,
-              )}(\\.\\d+)?`,
+              )}${tD}`,
           )
         : prepareRegExp(num, `-${anyF}|${ilte(n.int)}(\\.${dlte(n.dec)})?`);
 };
@@ -47,10 +48,10 @@ export const lt = (num: number): RegExp => {
             num,
             `-${anyF}|(${ilte(n.int)}\\.${dlt(n.dec)})|(${ilt(
                 n.int,
-            )}(\\.\\d+)?)|(${ilte(n.int)}(\\.0+)?)`,
+            )}${tD})|(${ilte(n.int)}(\\.0+)?)`,
         );
     else if (n.int > 0)
-        return prepareRegExp(num, `-${anyF}|${ilt(n.int)}(\\.\\d+)?`);
+        return prepareRegExp(num, `-${anyF}|${ilt(n.int)}${tD}`);
     else return prepareRegExp(num, `-${anyF}|0(\\.${dlt(n.dec)})?`);
 };
 
