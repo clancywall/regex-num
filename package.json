@@ -1,18 +1,25 @@
 {
     "name": "regex-num",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "Generates numerical operations in regex",
-    "main": "util.js",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
+    "files": [
+        "dist"
+    ],
     "scripts": {
         "test": "jest",
-        "build": "tsc"
+        "build": "npm run clean && npm run build:esm && npm run build:cjs",
+        "clean": "rd /s /q dist",
+        "build:esm": "tsc --outDir dist/esm --project tsconfig.build.json",
+        "build:cjs": "tsc --module CommonJs --outDir dist/cjs --project tsconfig.build.json"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/clancywall/regex-num.git"
     },
     "keywords": [
-        "regex"
+        "regex, numbers, numerical, regular expressions"
     ],
     "author": "Clancy Wall",
     "license": "ISC",
