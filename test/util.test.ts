@@ -1,4 +1,3 @@
-import { gt, gte, lte } from '../src/util';
 import { check, getRegExp, runAll, runRandoms } from './test.helpers';
 ['gte', 'gt', 'lte', 'lt'].forEach((type) => {
     test(`check ${type} integers`, () => {

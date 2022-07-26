@@ -1,4 +1,4 @@
-import { gt, gte, lte, lt } from '../src/util';
+import { gt, gte, lte, lt } from '../src/index';
 
 export const runAll = (
     type: string,
