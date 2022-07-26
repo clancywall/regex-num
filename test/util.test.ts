@@ -46,8 +46,9 @@ import { check, getRegExp, runAll, runRandoms } from './test.helpers';
 
 test(`check one number`, () => {
     const type = 'lt';
-    const i = 1343;
-    const j = 1180;
+    const i = 1;
+    const j = 1;
     const reg = getRegExp(type, i);
+    console.log(reg);
     check(type, reg, i, j);
 });

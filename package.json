@@ -2,7 +2,7 @@
     "name": "regex-num",
     "version": "1.0.0",
     "description": "Generates numerical operations in regex",
-    "main": "index.js",
+    "main": "util.js",
     "scripts": {
         "test": "jest",
         "build": "tsc"
@@ -11,8 +11,10 @@
         "type": "git",
         "url": "git+https://github.com/clancywall/regex-num.git"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": [
+        "regex"
+    ],
+    "author": "Clancy Wall",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/clancywall/regex-num/issues"
