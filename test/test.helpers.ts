@@ -69,8 +69,8 @@ export const getRegExp = (type: string, i: number) => {
 };
 
 export const check = (type: string, reg: RegExp, i: number, j: number) => {
-    expect(reg.test('')).toBeFalsy(); //empty string check
     try {
+        expect(reg.test('')).toBeFalsy(); //empty string check
         switch (type.toLowerCase()) {
             case 'gte':
                 checkgte(reg, i, j);
