@@ -40,7 +40,7 @@ export const igt = (num: number): string => {
 export const ilte = (num: number): string => {
     if (num === 0) return '0';
     let n = toDigits(num);
-    let reg = `\\d{0,${n.length - 1}}|`;
+    let reg = n.length > 1 ? `\\d{1,${n.length - 1}}|` : '';
     n.forEach((d) => {
         reg += `[0-${d}]`;
     });
