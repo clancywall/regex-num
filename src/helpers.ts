@@ -16,7 +16,7 @@ export const prepareRegExp = (reg: string, collapse = true): RegExp => {
  * @returns collapsed string
  */
 export const collapseRegExpString = (reg: string): string => {
-    reg = replaceAll(reg, '\\d{0}', '').replaceAll('[0-9]', '\\d');
+    reg = replaceAll(replaceAll(reg, '\\d{0}', ''), '[0-9]', '\\d');
     for (let i = 0; i < 10; i++) {
         reg = replaceAll(reg, `[${i}-${i}]`, `${i}`);
     }
