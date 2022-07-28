@@ -22,7 +22,7 @@ E.g. `gt(1)` returns `(([1-9]\d{1,}|[1-9])\.\d*[1-9]\d*)|(([1-9]\d{1,}|[2-9])(\.
 
 Regex that matches any number <= the provided number.
 
-E.g. `lte(1)` returns `(-\d+(\.\d+)?|(\d{0,0}|[0-1])(\.(0+))?)|(0(\.\d+)?)`
+E.g. `lte(1)` returns `(-\d+(\.\d+)?|([0-1])(\.(0+))?)|(0(\.\d+)?)`
 
 ### `lt(number)`
 
