@@ -16,14 +16,14 @@ export const prepareRegExp = (reg: string, collapse = true): RegExp => {
  * @returns collapsed string
  */
 export const collapseRegExpString = (reg: string): string => {
-    reg = reg.replaceAll('\\d{0}', '').replaceAll('[0-9]', '\\d');
+    reg = replaceAll(reg, '\\d{0}', '').replaceAll('[0-9]', '\\d');
     for (let i = 0; i < 10; i++) {
-        reg = reg.replaceAll(`[${i}-${i}]`, `${i}`);
+        reg = replaceAll(reg, `[${i}-${i}]`, `${i}`);
     }
     for (let i = 16; i > 2; i--) {
         let s = '';
         for (let j = 0; j < i; j++) s += '\\d';
-        reg = reg.replaceAll(s, `\\d{${i}}`);
+        reg = replaceAll(reg, s, `\\d{${i}}`);
     }
     return reg;
 };
@@ -60,3 +60,12 @@ export const toDigits = (num: number): number[] => {
             return Number(num);
         });
 };
+
+// Because JS is the devil.
+// Taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+function escapeRegExp(string: string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+}
+function replaceAll(str: string, match: string, replacement: any) {
+    return str.replace(new RegExp(escapeRegExp(match), 'g'), () => replacement);
+}
