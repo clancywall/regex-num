@@ -48,7 +48,7 @@ const numToString = (num: number): string => {
 };
 
 export const getRegExp = (type: string, i: number) => {
-    let reg: RegExp = /''/;
+    let reg = /''/;
     switch (type.toLowerCase()) {
         case 'gte':
             reg = new RegExp(`^(${gte(i).source})$`);

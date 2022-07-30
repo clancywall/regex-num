@@ -6,7 +6,7 @@ import { toDigits } from './helpers';
  * @returns >= Regex
  */
 export const igte = (num: number): string => {
-    let n = toDigits(num);
+    const n = toDigits(num);
     let reg = `[1-9]\\d{${n.length},}|`;
     n.forEach((d) => {
         reg += `[${d}-9]`;
@@ -39,7 +39,7 @@ export const igt = (num: number): string => {
  */
 export const ilte = (num: number): string => {
     if (num === 0) return '0';
-    let n = toDigits(num);
+    const n = toDigits(num);
     let reg = n.length > 1 ? `\\d{1,${n.length - 1}}|` : '';
     n.forEach((d) => {
         reg += `[0-${d}]`;
@@ -71,7 +71,7 @@ export const ilt = (num: number): string => {
  * @returns >= Regex
  */
 export const dgte = (num: number): string => {
-    let n = toDigits(num);
+    const n = toDigits(num);
     return dgtProcess(n);
 };
 
@@ -105,7 +105,7 @@ const dgtProcess = (n: number[]): string => {
  */
 export const dgt = (num: number): string => {
     if (num === 0) return '\\d*[1-9]\\d*';
-    let n = toDigits(num);
+    const n = toDigits(num);
     while (n.length < 16) {
         n.push(0);
     }
@@ -126,7 +126,7 @@ export const dgt = (num: number): string => {
  * @returns <= Regex
  */
 export const dlte = (num: number): string => {
-    let n = toDigits(num);
+    const n = toDigits(num);
     return dltProcess(n);
 };
 
@@ -166,7 +166,7 @@ const dltProcess = (n: number[]): string => {
  */
 export const dlt = (num: number): string => {
     if (num === 0) return '0*';
-    let n = toDigits(num);
+    const n = toDigits(num);
     while (n.length < 16) {
         n.push(0);
     }

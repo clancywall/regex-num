@@ -61,11 +61,15 @@ export const toDigits = (num: number): number[] => {
         });
 };
 
-// Because JS is the devil.
-// Taken from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
-function escapeRegExp(string: string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
-}
-function replaceAll(str: string, match: string, replacement: any) {
+// Utility functions to maintain backwards compatibility to ES6
+const escapeRegExp = (string: string): string => {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+const replaceAll = (
+    str: string,
+    match: string,
+    replacement: string,
+): string => {
     return str.replace(new RegExp(escapeRegExp(match), 'g'), () => replacement);
-}
+};

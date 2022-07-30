@@ -9,6 +9,7 @@
     ],
     "scripts": {
         "test": "jest",
+        "lint": "eslint src/* test/*",
         "build": "npm run clean && npm run build:esm && npm run build:cjs",
         "clean": "rd /s /q dist",
         "build:esm": "tsc --outDir dist/esm --project tsconfig.build.json",
@@ -29,6 +30,9 @@
     "homepage": "https://github.com/clancywall/regex-num#readme",
     "devDependencies": {
         "@types/jest": "^28.1.4",
+        "@typescript-eslint/eslint-plugin": "^5.31.0",
+        "@typescript-eslint/parser": "^5.31.0",
+        "eslint": "^8.20.0",
         "jest": "^28.1.2",
         "prettier": "^2.7.1",
         "ts-jest": "^28.0.5",
