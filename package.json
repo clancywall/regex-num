@@ -1,6 +1,6 @@
 {
     "name": "regex-num",
-    "version": "0.0.4",
+    "version": "1.0.0",
     "description": "Generates numerical operations in regex",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -23,7 +23,7 @@
         "regex, numbers, numerical, regular expressions"
     ],
     "author": "Clancy Wall",
-    "license": "ISC",
+    "license": "GPL-3.0",
     "bugs": {
         "url": "https://github.com/clancywall/regex-num/issues"
     },
