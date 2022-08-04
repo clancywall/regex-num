@@ -11,7 +11,9 @@
         "test": "jest",
         "lint": "eslint src/* test/*",
         "build": "npm run clean && npm run build:esm && npm run build:cjs",
+        "build:ci": "npm run clean:ci && npm run build:esm && npm run build:cjs",
         "clean": "rd /s /q dist",
+        "clean:ci": "rm -rf dist",
         "build:esm": "tsc --outDir dist/esm --project tsconfig.build.json",
         "build:cjs": "tsc --module CommonJs --outDir dist/cjs --project tsconfig.build.json"
     },
